@@ -7,6 +7,7 @@ const uri = 'mongodb+srv://admin:1234@learningapi.qtmxs6l.mongodb.net/?retryWrit
 
 const app = express();
 app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
 app.get('/', (req, res) => {
     res.send("hello obaid")
 
@@ -59,6 +60,21 @@ app.put('/product/:id', async (req, res) => {
 
     } catch (error) {
         console.log('error', error)
+        res.status(500).json({ message: error.message })
+
+    }
+})
+
+app.delete('/product/:id', async (req, res) => {
+
+    try {
+        const { id } = req.params
+        const product = await Product.findByIdAndDelete(id)
+        if (!product) {
+            return res.status(404).json({ message: 'can not found product with ID' })
+        }
+        res.status(200).json({ message: "Product is deleted successfuly" })
+    } catch (error) {
         res.status(500).json({ message: error.message })
 
     }

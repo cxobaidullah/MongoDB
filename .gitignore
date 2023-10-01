@@ -1,0 +1,29 @@
+# Directories
+node_modules/
+dist/
+
+# Environment variables
+.env
+
+# Logs
+logs/
+*.log
+
+# Dependency lock files
+package-lock.json
+yarn.lock
+
+# IDE files (specific to Visual Studio Code)
+.vscode/
+*.code-workspace
+
+# macOS specific files
+.DS_Store
+
+# Editor-specific temporary files
+*~
+
+# Testing and coverage artifacts
+coverage/
+# Ignore warnings about line endings
+node_modules/**/*.bin/*

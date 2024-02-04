@@ -26,7 +26,7 @@ exports.createUser = async (req, res) => {
   
       const user = await CreateUser.create(req.body);//here we need to save user token aswell
       const userWithoutPassword = { ...user.toJSON(), password: undefined };
-      const token = jwt.sign({ userId: user._id }, jwtSecret, { expiresIn: '1h' });
+      const token = jwt.sign({ user: userWithoutPassword }, jwtSecret, { expiresIn: '1h' });
 
       // Send response with user data and token
       res.status(200).json({

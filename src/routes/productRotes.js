@@ -4,9 +4,14 @@ const router = express.Router();
 const productController = require('../controllers/productController');
 const createUserController = require('../controllers/createUserController');
 const { createUser } = require('../controllers/createUserController');
+const multer = require('multer');
 
+// Set up multer middleware for file uploads
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 // Create a new product
-router.post('/', productController.createProduct);
+// router.post('/',upload.single('file'), productController.createProduct);//for image
+router.post('/', productController.createProduct);//simple
 
 // Get all products
 router.get('/', productController.getProducts);

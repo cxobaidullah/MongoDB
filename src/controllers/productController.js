@@ -1,6 +1,8 @@
 // app/controllers/productController.js
 const Product = require('../models/productModel');
-
+const multer = require('multer');
+const storage = multer.memoryStorage(); // Store image in memory for now, you may adjust this based on your needs
+const upload = multer({ storage: storage });
 // Create a new product
 exports.createProduct = async (req, res) => {
     try {
@@ -11,15 +13,48 @@ exports.createProduct = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+// exports.createProduct = async (req, res) => {
+//     try {
+//         const { name, quantity, price } = req.body;
 
+//         // Check if the request contains a file
+   
+//         if (!req.file) {
+//             return res.status(400).json({ message: 'Please upload an image.' });
+//         }
+
+//         const product = await Product.create({
+//             name,
+//             quantity,
+//             price,
+//             image: {
+//                 data: req.file.buffer.toString('base64'),
+//                 contentType: req.file.mimetype
+//             }
+//         });
+
+//         res.status(200).json(product);
+//     } catch (error) {
+//         console.error('Error:', error);
+//         res.status(500).json({ message: error.message });
+//     }
+// };
 // Get all products
 exports.getProducts = async (req, res) => {
     try {
         const products = await Product.find({});
-        res.status(200).json(products);
+        res.status(200).json({
+            success: true,
+            message: 'Products retrieved successfully.',
+            products: products
+        });
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).json({ message: error.message });
+        res.status(500).json({
+            success: false,
+            message: 'Failed to retrieve products.',
+            error: error.message
+        });
     }
 };
 
@@ -28,10 +63,18 @@ exports.getProductById = async (req, res) => {
     try {
         const { id } = req.params;
         const product = await Product.findById(id);
-        res.status(200).json(product);
+        res.status(200).json({
+            success: true,
+            message: 'Products retrieved successfully.',
+            products: product
+        });
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).json({ message: error.message });
+        res.status(500).json({
+            success: false,
+            message: 'Failed to retrieve products.',
+            error: error.message
+        });
     }
 };
 
@@ -43,10 +86,19 @@ exports.updateProduct = async (req, res) => {
         if (!updatedProduct) {
             return res.status(404).json({ message: `Cannot find data against this id ${id}` });
         }
-        res.status(200).json(updatedProduct);
+        // res.status(200).json(updatedProduct);
+        res.status(200).json({
+            success: true,
+            message: 'Products update successfully.',
+            products: updatedProduct
+        });
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).json({ message: error.message });
+        res.status(500).json({
+            success: false,
+            message: 'Failed to retrieve products.',
+            error: error.message
+        });
     }
 };
 
